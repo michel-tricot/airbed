@@ -3,6 +3,7 @@ import json
 from json import JSONDecodeError
 
 
+
 def parse_messages(lines):
     collect = []
     for line in lines.splitlines():

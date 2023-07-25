@@ -9,7 +9,7 @@ python = "^3.10"
 airbyte-cdk = "^0.47.1"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^5.2"
+pytest = "^7.4.0"
 black = "^22.12.0"
 isort = "^5.12.0"
 flake8-pyproject = "^1.2.3"
@@ -41,4 +41,9 @@ extend-ignore = [
   "E231",  # Bad trailing comma (conflicts with Black)
   "E501",  # line too long (conflicts with Black)
   "W503",  # line break before binary operator (conflicts with Black)
+]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
 ]
