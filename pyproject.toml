@@ -5,7 +5,7 @@ description = ""
 authors = ["Michel Tricot <michel@airbyte.io>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 airbyte-cdk = "^0.47.1"
 
 [tool.poetry.group.dev.dependencies]

@@ -1,12 +1,16 @@
 import sys
 
-from airbed.platform.worker import Worker
+from airbed.platform.source_runner import ContainerSourceRunner
 
 
 def main():
-    runner = None
-    worker = Worker(runner)
-    worker.start()
+    source_runner = ContainerSourceRunner("airbyte/source-pokeapi", "0.1.5-dev.819dd97d48")
+    source_runner.spec()
+
+    # runner = None
+    # worker = Worker(runner)
+    # worker.start()
+
 
 if __name__ == "__main__":
     sys.exit(main())

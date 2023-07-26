@@ -1,8 +1,21 @@
 import logging
+
 from abc import ABC, abstractmethod
 
-from airbed.platform.source_runner import Runner
-from airbyte_cdk.models import AirbyteMessage, Type, AirbyteStateMessage, ConnectorSpecification, AirbyteRecordMessage, AirbyteCatalog, AirbyteLogMessage, AirbyteTraceMessage, AirbyteControlMessage, AirbyteConnectionStatus
+from airbyte_cdk.models import (
+    AirbyteCatalog,
+    AirbyteConnectionStatus,
+    AirbyteControlMessage,
+    AirbyteLogMessage,
+    AirbyteMessage,
+    AirbyteRecordMessage,
+    AirbyteStateMessage,
+    AirbyteTraceMessage,
+    ConnectorSpecification,
+    Type,
+)
+
+from airbed.platform.source_runner import SourceRunner
 
 
 class MessageCollector(ABC):
@@ -31,25 +44,24 @@ class LoggingMessageCollector(MessageCollector):
 
 class DispatchMessageCollector(MessageCollector):
     def onMessage(self, message: AirbyteMessage):
-        match message.type:
-            case Type.RECORD:
-                self.onRecord(message.record)
-            case Type.STATE:
-                self.onState(message.state)
-            case Type.LOG:
-                self.onLog(message.log)
-            case Type.SPEC:
-                self.onSpec(message.spec)
-            case Type.CONNECTION_STATUS:
-                self.onConnectionStatus(message.connectionStatus)
-            case Type.CATALOG:
-                self.onCatalog(message.catalog)
-            case Type.TRACE:
-                self.onTrace(message.trace)
-            case Type.CONTROL:
-                self.onControl(message.control)
-            case _:
-                self.onUnknown(message)
+        if message.type == Type.RECORD:
+            self.onRecord(message.record)
+        elif message.type == Type.STATE:
+            self.onState(message.state)
+        elif message.type == Type.LOG:
+            self.onLog(message.log)
+        elif message.type == Type.SPEC:
+            self.onSpec(message.spec)
+        elif message.type == Type.CONNECTION_STATUS:
+            self.onConnectionStatus(message.connectionStatus)
+        elif message.type == Type.CATALOG:
+            self.onCatalog(message.catalog)
+        elif message.type == Type.TRACE:
+            self.onTrace(message.trace)
+        elif message.type == Type.CONTROL:
+            self.onControl(message.control)
+        else:
+            self.onUnknown(message)
 
     def onRecord(self, record: AirbyteRecordMessage):
         pass
