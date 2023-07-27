@@ -1,6 +1,21 @@
 import json
 
 from json import JSONDecodeError
+from typing import Any
+
+from pydantic.main import BaseModel
+
+
+def write_json(file, obj) -> None:
+    with open(file, "w") as f:
+        if isinstance(obj, BaseModel):
+            obj = json.loads(obj.json())
+        json.dump(obj, f)
+
+
+def read_json(file) -> Any:
+    with open(file, "r") as f:
+        return json.load(f)
 
 
 def parse_json(line):
@@ -8,15 +23,6 @@ def parse_json(line):
         return json.loads(line)
     except JSONDecodeError:
         return None
-
-
-def parse_messages(lines):
-    collect = []
-    for line in lines.splitlines():
-        parsed_line = parse_json(line)
-        if parsed_line:
-            collect.append(parsed_line)
-    return collect
 
 
 def pp_json(json_object):

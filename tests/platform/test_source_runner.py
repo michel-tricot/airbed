@@ -1,9 +1,10 @@
 import os.path
 import unittest
 
-from airbyte_cdk.models import Type
+from airbyte_cdk.models import Type, ConfiguredAirbyteCatalog
 
 from airbed.platform.source_runner import ContainerSourceRunner
+from airbed.tools.tools import read_json
 
 
 class SourceRunnerTestCase(unittest.TestCase):
@@ -14,40 +15,40 @@ class SourceRunnerTestCase(unittest.TestCase):
         self.assertEqual(1, len(cmd_output))
 
     def test_check(self):
-        config_file = os.path.join(os.path.dirname(__file__), "config.json")
+        config = read_json(os.path.join(os.path.dirname(__file__), "config.json"))
 
         source_runner = ContainerSourceRunner("airbyte/source-faker", "4.0.0")
-        cmd_output = source_runner.check(config_file=config_file)
+        cmd_output = source_runner.check(config=config)
         cmd_output = list(filter(lambda m: m.type == Type.CONNECTION_STATUS, cmd_output))
 
         self.assertEqual(1, len(cmd_output))
 
     def test_discover(self):
-        config_file = os.path.join(os.path.dirname(__file__), "config.json")
+        config = read_json(os.path.join(os.path.dirname(__file__), "config.json"))
 
         source_runner = ContainerSourceRunner("airbyte/source-faker", "4.0.0")
-        cmd_output = source_runner.discover(config_file=config_file)
+        cmd_output = source_runner.discover(config=config)
         cmd_output = list(filter(lambda m: m.type == Type.CATALOG, cmd_output))
 
         self.assertEqual(1, len(cmd_output))
 
     def test_read_no_state(self):
-        config_file = os.path.join(os.path.dirname(__file__), "config.json")
-        catalog_file = os.path.join(os.path.dirname(__file__), "configured_catalog.json")
+        config = read_json(os.path.join(os.path.dirname(__file__), "config.json"))
+        catalog = read_json(os.path.join(os.path.dirname(__file__), "configured_catalog.json"))
 
         source_runner = ContainerSourceRunner("airbyte/source-faker", "4.0.0")
-        cmd_output = source_runner.read(config_file=config_file, catalog_file=catalog_file)
+        cmd_output = source_runner.read(config=config, catalog=ConfiguredAirbyteCatalog.parse_obj(catalog))
         cmd_output = list(filter(lambda m: m.type == Type.RECORD, cmd_output))
 
         self.assertEqual(30, len(cmd_output))
 
     def test_read_state(self):
-        config_file = os.path.join(os.path.dirname(__file__), "config.json")
-        catalog_file = os.path.join(os.path.dirname(__file__), "configured_catalog.json")
-        state_file = os.path.join(os.path.dirname(__file__), "state.json")
+        config = read_json(os.path.join(os.path.dirname(__file__), "config.json"))
+        catalog = read_json(os.path.join(os.path.dirname(__file__), "configured_catalog.json"))
+        state = read_json(os.path.join(os.path.dirname(__file__), "state.json"))
 
         source_runner = ContainerSourceRunner("airbyte/source-faker", "4.0.0")
-        cmd_output = source_runner.read(config_file=config_file, catalog_file=catalog_file, state_file=state_file)
+        cmd_output = source_runner.read(config=config, catalog=ConfiguredAirbyteCatalog.parse_obj(catalog), state=state)
         cmd_output = list(filter(lambda m: m.type == Type.RECORD, cmd_output))
 
         self.assertEqual(20, len(cmd_output))
