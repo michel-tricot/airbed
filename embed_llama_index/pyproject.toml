@@ -1,5 +1,5 @@
 [tool.poetry]
-name = ""airbyte-embed-llama-index""
+name = "airbyte-embed-llama-index"
 version = "0.1.0"
 description = ""
 authors = ["Michel Tricot <michel@airbyte.io>"]
