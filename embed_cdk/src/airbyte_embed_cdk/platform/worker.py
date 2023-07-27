@@ -2,7 +2,7 @@ import logging
 
 from abc import ABC, abstractmethod
 
-from airbed.platform.source_runner import SourceRunner
+from airbyte_embed_cdk.platform.source_runner import SourceRunner
 from airbyte_cdk.models import (
     AirbyteCatalog,
     AirbyteConnectionStatus,

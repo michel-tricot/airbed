@@ -1,6 +1,6 @@
 from typing import Any, Generic, Iterable, List, TypeVar
 
-from airbed.platform.source_runner import SourceRunner
+from airbyte_embed_cdk.platform.source_runner import SourceRunner
 from airbyte_cdk.models import AirbyteRecordMessage, ConfiguredAirbyteCatalog, Type
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document

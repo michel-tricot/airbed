@@ -2,7 +2,7 @@ import unittest
 
 from subprocess import CalledProcessError
 
-from airbed.tools.processes import run_and_stream_lines
+from airbyte.tools.processes import run_and_stream_lines
 
 
 class ProcessesTestCase(unittest.TestCase):

@@ -1,8 +1,8 @@
 import os.path
 import unittest
 
-from airbed.platform.source_runner import ContainerSourceRunner
-from airbed.tools.tools import read_json
+from airbyte_embed_cdk.platform.source_runner import ContainerSourceRunner
+from airbyte_embed_cdk.tools.tools import read_json
 from airbyte_cdk.models import ConfiguredAirbyteCatalog, Type
 
 

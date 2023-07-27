@@ -1,6 +1,6 @@
 import sys
 
-from airbed.platform.source_runner import ContainerSourceRunner
+from airbyte_embed_cdk.platform.source_runner import ContainerSourceRunner
 
 
 def main():

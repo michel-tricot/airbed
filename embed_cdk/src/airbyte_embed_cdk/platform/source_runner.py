@@ -7,8 +7,8 @@ import tempfile
 from abc import ABC, abstractmethod
 from typing import Generic, Iterable, TypeVar
 
-from airbed.tools.processes import run_and_stream_lines
-from airbed.tools.tools import parse_json, write_json
+from airbyte_embed_cdk.tools.processes import run_and_stream_lines
+from airbyte_embed_cdk.tools.tools import parse_json, write_json
 from airbyte_cdk.models import AirbyteMessage, ConfiguredAirbyteCatalog, Type
 
 
