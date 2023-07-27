@@ -1,20 +1,15 @@
-from typing import Any, List, Iterable, Generic, TypeVar
-
-from llama_index.readers.base import BaseReader
-from llama_index.readers.schema.base import Document
+from typing import Any, Generic, Iterable, List, TypeVar
 
 from airbed.platform.source_runner import SourceRunner
-
-from airbyte_cdk.models import AirbyteRecordMessage, Type, ConfiguredAirbyteCatalog
+from airbyte_cdk.models import AirbyteRecordMessage, ConfiguredAirbyteCatalog, Type
+from llama_index.readers.base import BaseReader
+from llama_index.readers.schema.base import Document
 
 
 def default_transformer(record: AirbyteRecordMessage) -> Document:
     document = Document(
         text=None,
-        metadata={
-            "stream_name": record.stream,
-            "emitted_at": record.emitted_at
-        },
+        metadata={"stream_name": record.stream, "emitted_at": record.emitted_at},
     )
 
     return document
@@ -30,7 +25,6 @@ TState = TypeVar("TState")
 
 
 class BaseLLamaIndexReader(BaseReader, Generic[TConfig, TState]):
-
     def __init__(self, source: SourceRunner[TConfig, TState], document_transformer=default_transformer):
         self.source = source
         self.document_transformer = document_transformer

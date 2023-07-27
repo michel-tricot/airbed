@@ -19,6 +19,7 @@ pytest = "^7.4.0"
 black = "^22.12.0"
 isort = "^5.12.0"
 flake8-pyproject = "^1.2.3"
+autoflake = "^2.2.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -48,6 +49,9 @@ extend-ignore = [
   "E501",  # line too long (conflicts with Black)
   "W503",  # line break before binary operator (conflicts with Black)
 ]
+
+[tool.autoflake]
+check = true
 
 [tool.pytest.ini_options]
 testpaths = [

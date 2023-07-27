@@ -5,12 +5,11 @@ import subprocess
 import tempfile
 
 from abc import ABC, abstractmethod
-from typing import Iterable, TypeVar, Generic
-
-from airbyte_cdk.models import AirbyteMessage, Type, ConfiguredAirbyteCatalog
+from typing import Generic, Iterable, TypeVar
 
 from airbed.tools.processes import run_and_stream_lines
 from airbed.tools.tools import parse_json, write_json
+from airbyte_cdk.models import AirbyteMessage, ConfiguredAirbyteCatalog, Type
 
 
 TConfig = TypeVar("TConfig")

@@ -1,10 +1,9 @@
 import os.path
 import unittest
 
-from airbyte_cdk.models import Type, ConfiguredAirbyteCatalog
-
 from airbed.platform.source_runner import ContainerSourceRunner
 from airbed.tools.tools import read_json
+from airbyte_cdk.models import ConfiguredAirbyteCatalog, Type
 
 
 class SourceRunnerTestCase(unittest.TestCase):
