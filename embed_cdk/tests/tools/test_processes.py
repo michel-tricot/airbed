@@ -1,9 +1,6 @@
-import logging
 import unittest
 
 from airbyte_embed_cdk.tools.processes import run_and_stream_lines, ProcessResult
-
-logging.basicConfig(level=logging.DEBUG)
 
 
 class ProcessesTestCase(unittest.TestCase):
