@@ -1,4 +1,8 @@
 ```
+# Some configs I set
+poetry config virtualenvs.prefer-active-python true
+poetry config virtualenvs.in-project true
+
 # Get started
 poetry install
 
@@ -16,6 +20,7 @@ poetry run flake8
 poetry run black . &&
 poetry run isort .
 
-
+# Tests
+poetry run pytest
 
 ```
