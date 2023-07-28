@@ -1,4 +1,4 @@
-from typing import List, Optional, TypeVar
+from typing import List, Optional
 
 from airbyte_cdk.models import (
     AirbyteCatalog,
@@ -10,7 +10,7 @@ from airbyte_cdk.models import (
     Type,
 )
 
-from airbyte_embed_cdk.source_runner import SourceRunner
+from airbyte_embed_cdk.models.source import SourceRunner, TConfig
 from airbyte_embed_cdk.tools import get_first, get_first_message
 
 
@@ -52,9 +52,6 @@ def full_refresh_streams(catalog: AirbyteCatalog, stream_names: List[str]) -> Co
         configured_streams.append(to_configured_stream(stream))
 
     return to_configured_catalog(configured_streams)
-
-
-TConfig = TypeVar("TConfig")
 
 
 def create_full_catalog(source: SourceRunner, config: TConfig, streams: Optional[str] = None) -> ConfiguredAirbyteCatalog:

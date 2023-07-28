@@ -3,8 +3,7 @@ import unittest
 from airbyte_cdk.models import ConfiguredAirbyteCatalog, Type
 
 from airbyte_embed_cdk.source_runner import ContainerSourceRunner
-
-from ..fixtures import Fixtures
+from unit_tests.fixtures import Fixtures
 
 
 class ContainerSourceRunnerTestCase(unittest.TestCase):

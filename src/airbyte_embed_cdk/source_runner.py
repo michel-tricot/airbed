@@ -1,55 +1,16 @@
-import logging
 import os.path
 import shutil
 import subprocess
 import tempfile
 
-from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Generic, Iterable, TypeVar
+from typing import Iterable
 
-from airbyte_cdk.models import AirbyteMessage, ConfiguredAirbyteCatalog, Type
-from pydantic.typing import PathLike
+from airbyte_cdk.models import AirbyteMessage, ConfiguredAirbyteCatalog
 
+from airbyte_embed_cdk.models.source import SourceRunner, TConfig, TState
 from airbyte_embed_cdk.processes import run_and_stream_lines
-from airbyte_embed_cdk.tools import parse_json, write_json
-
-
-TConfig = TypeVar("TConfig")
-TState = TypeVar("TState")
-
-
-class SourceRunner(ABC, Generic[TConfig, TState]):
-    @abstractmethod
-    def spec(self) -> Iterable[AirbyteMessage]:
-        # Maybe we should return the spec directly?
-        pass
-
-    @abstractmethod
-    def check(self, config: TConfig) -> Iterable[AirbyteMessage]:
-        pass
-
-    @abstractmethod
-    def discover(self, config: TConfig) -> Iterable[AirbyteMessage]:
-        # Maybe we should return the catalog directly?
-        pass
-
-    @abstractmethod
-    def read(self, config: TConfig, catalog: ConfiguredAirbyteCatalog, state: TState) -> Iterable[AirbyteMessage]:
-        pass
-
-    @staticmethod
-    def _parse_lines(line_generator: Iterable[str]) -> Iterable[AirbyteMessage]:
-        for line in line_generator:
-            parsed_line = parse_json(line)
-            if parsed_line:
-                obj = AirbyteMessage.parse_obj(parsed_line)
-                if obj.type != Type.LOG:
-                    yield obj
-                else:
-                    logging.info(obj)
-            else:
-                logging.info(line)
+from airbyte_embed_cdk.tools import write_json
 
 
 CONTAINER_RUNNER = os.getenv("AIRBYTE_CONTAINER_RUNNER", "docker")
@@ -155,5 +116,5 @@ class ContainerSourceRunner(SourceRunner):
         return f"{self.image_name}:{self.image_tag}"
 
     @staticmethod
-    def _write_file(obj, dst: PathLike[str]):
+    def _write_file(obj, dst: Path):
         write_json(dst, obj)

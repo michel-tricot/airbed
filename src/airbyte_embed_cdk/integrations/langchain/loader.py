@@ -18,7 +18,7 @@ except (TypeError, ConfigError):
     # can't use the real type because of pydantic versions mismatch
     from .hack_types import BaseLoader, Document
 
-from airbyte_embed_cdk.source_runner import SourceRunner
+from ...models.source import SourceRunner, TConfig
 
 
 def default_transformer(record: AirbyteRecordMessage) -> Document:
@@ -31,7 +31,6 @@ def default_transformer(record: AirbyteRecordMessage) -> Document:
     return document
 
 
-TConfig = TypeVar("TConfig")
 TState = TypeVar("TState")
 
 

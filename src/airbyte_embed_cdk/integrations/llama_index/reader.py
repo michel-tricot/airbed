@@ -1,4 +1,4 @@
-from typing import Generic, Iterable, List, TypeVar
+from typing import Generic, Iterable, List
 
 from airbyte_cdk.models import AirbyteRecordMessage, Type
 from pydantic.errors import ConfigError
@@ -18,7 +18,7 @@ except (TypeError, ConfigError):
     # can't use the real type because of pydantic versions mismatch
     from .hack_types import BaseReader, Document
 
-from airbyte_embed_cdk.source_runner import SourceRunner
+from ...models.source import SourceRunner, TConfig, TState
 
 
 def default_transformer(record: AirbyteRecordMessage) -> Document:
@@ -29,10 +29,6 @@ def default_transformer(record: AirbyteRecordMessage) -> Document:
     )
 
     return document
-
-
-TConfig = TypeVar("TConfig")
-TState = TypeVar("TState")
 
 
 class BaseLLamaIndexReader(BaseReader, Generic[TConfig, TState]):

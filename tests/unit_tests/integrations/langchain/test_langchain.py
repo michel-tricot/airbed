@@ -1,8 +1,7 @@
 import unittest
 
 from airbyte_embed_cdk.integrations.langchain import airbyte_langchain_loader
-
-from ...fixtures import Fixtures
+from unit_tests.fixtures import Fixtures
 
 
 FakerLoader = airbyte_langchain_loader("airbyte/source-faker", "4.0.0")
