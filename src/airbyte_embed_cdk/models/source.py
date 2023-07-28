@@ -1,6 +1,6 @@
 import logging
 from abc import ABC, abstractmethod
-from typing import Generic, Iterable, TypeVar
+from typing import Generic, Iterable, Optional, TypeVar
 
 from airbyte_protocol.models import AirbyteMessage, ConfiguredAirbyteCatalog, Type
 
@@ -26,7 +26,7 @@ class SourceRunner(ABC, Generic[TConfig, TState]):
         pass
 
     @abstractmethod
-    def read(self, config: TConfig, catalog: ConfiguredAirbyteCatalog, state: TState) -> Iterable[AirbyteMessage]:
+    def read(self, config: TConfig, catalog: ConfiguredAirbyteCatalog, state: Optional[TState]) -> Iterable[AirbyteMessage]:
         pass
 
     @staticmethod

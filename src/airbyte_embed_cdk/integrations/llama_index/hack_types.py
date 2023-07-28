@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, List
+from typing import Any, Dict, List
 
 
 @dataclass
@@ -8,7 +8,7 @@ class LCDocument:
     page_content: str
     metadata: dict
 
-    def __init__(self, page_content=None, metadata=None):
+    def __init__(self, page_content: str = "", metadata: Dict[str, Any] = {}) -> None:
         self.metadata = metadata
         self.page_content = page_content
 
@@ -18,7 +18,7 @@ class Document:
     text: str
     metadata: dict
 
-    def __init__(self, text=None, metadata=None):
+    def __init__(self, text: str = "", metadata: Dict[str, Any] = {}) -> None:
         self.metadata = metadata
         self.text = text
 

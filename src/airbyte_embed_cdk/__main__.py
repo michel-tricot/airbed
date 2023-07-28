@@ -1,7 +1,7 @@
 import sys
 
 
-def main():
+def main():  # type: ignore[func-returns-value,no-untyped-def]
     pass
 
 

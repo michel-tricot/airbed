@@ -10,9 +10,12 @@ lint-black:
 lint-ruff:
 	poetry run ruff .
 
+lint-mypy:
+	poetry run mypy src tests
+
 format: format-ruff format-black
 
-lint: lint-ruff lint-black
+lint: lint-mypy lint-ruff lint-black
 
 test:
 	poetry run pytest

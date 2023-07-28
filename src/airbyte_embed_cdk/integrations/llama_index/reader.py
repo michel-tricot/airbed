@@ -1,4 +1,4 @@
-from typing import Generic, Iterable, List
+from typing import Callable, Generic, Iterable, List, Optional
 
 from airbyte_cdk.models import AirbyteRecordMessage, Type
 from pydantic.errors import ConfigError
@@ -15,7 +15,7 @@ except ImportError:
     raise
 except (TypeError, ConfigError):
     # can't use the real type because of pydantic versions mismatch
-    from .hack_types import BaseReader, Document
+    from .hack_types import BaseReader, Document  # type: ignore[assignment]
 
 from airbyte_embed_cdk.models.source import SourceRunner, TConfig, TState
 
@@ -31,15 +31,20 @@ def default_transformer(record: AirbyteRecordMessage) -> Document:
 
 
 class BaseLLamaIndexReader(BaseReader, Generic[TConfig, TState]):
-    def __init__(self, source: SourceRunner[TConfig, TState], config: TConfig, document_transformer=default_transformer):
+    def __init__(
+        self,
+        source: SourceRunner[TConfig, TState],
+        config: TConfig,
+        document_transformer: Callable[[AirbyteRecordMessage], Document] = default_transformer,
+    ):
         self.source = source
         self.config = config
         self.document_transformer = document_transformer
 
-    def load_data(self, streams: List[str], state: TState = None) -> List[Document]:
+    def load_data(self, streams: List[str], state: Optional[TState] = None) -> List[Document]:
         return list(self._stream_load_data(streams, state))
 
-    def _stream_load_data(self, streams: List[str], state: TState) -> Iterable[Document]:
+    def _stream_load_data(self, streams: List[str], state: Optional[TState]) -> Iterable[Document]:
         configured_catalog = create_full_catalog(self.source, self.config, streams)
 
         for message in self.source.read(self.config, configured_catalog, state):

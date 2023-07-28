@@ -1,4 +1,4 @@
-from typing import Generic, Iterable, List, TypeVar
+from typing import Callable, Generic, Iterable, List, Optional
 
 from airbyte_cdk.models import AirbyteRecordMessage, Type
 from pydantic.errors import ConfigError
@@ -15,9 +15,11 @@ except ImportError:
     raise
 except (TypeError, ConfigError):
     # can't use the real type because of pydantic versions mismatch
-    from .hack_types import BaseLoader, Document
+    from .hack_types import BaseLoader, Document  # type: ignore[assignment]
 
-from airbyte_embed_cdk.models.source import SourceRunner, TConfig
+from airbyte_embed_cdk.models.source import SourceRunner, TConfig, TState
+
+Transformer = Callable[[AirbyteRecordMessage], Document]
 
 
 def default_transformer(record: AirbyteRecordMessage) -> Document:
@@ -30,17 +32,14 @@ def default_transformer(record: AirbyteRecordMessage) -> Document:
     return document
 
 
-TState = TypeVar("TState")
-
-
 class BaseLangchainLoader(BaseLoader, Generic[TConfig, TState]):
     def __init__(
         self,
         source: SourceRunner[TConfig, TState],
         config: TConfig,
-        streams: List[str] = None,
-        state: TState = None,
-        document_transformer=default_transformer,
+        streams: Optional[List[str]] = None,
+        state: Optional[TState] = None,
+        document_transformer: Transformer = default_transformer,
     ):
         self.source = source
         self.config = config

@@ -40,7 +40,7 @@ def to_configured_stream(
     )
 
 
-def to_configured_catalog(configured_streams: List[ConfiguredAirbyteStream]):
+def to_configured_catalog(configured_streams: List[ConfiguredAirbyteStream]) -> ConfiguredAirbyteCatalog:
     return ConfiguredAirbyteCatalog.parse_obj({"streams": configured_streams})
 
 
@@ -54,10 +54,10 @@ def full_refresh_streams(catalog: AirbyteCatalog, stream_names: List[str]) -> Co
     return to_configured_catalog(configured_streams)
 
 
-def create_full_catalog(source: SourceRunner, config: TConfig, streams: Optional[str] = None) -> ConfiguredAirbyteCatalog:
+def create_full_catalog(source: SourceRunner, config: TConfig, streams: Optional[List[str]] = None) -> ConfiguredAirbyteCatalog:
     catalog_message = get_first_message(source.discover(config), Type.CATALOG)
 
-    if not catalog_message:
+    if not catalog_message or not catalog_message.catalog:
         raise Exception("Can't retrieve catalog from source")
 
     catalog = catalog_message.catalog

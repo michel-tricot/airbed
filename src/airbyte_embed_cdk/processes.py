@@ -1,19 +1,20 @@
 import logging
 import subprocess
-from typing import Iterable, List, Optional
+from typing import Any, Iterable, List, Optional
 
 
 class ProcessResult:
     returncode: int
 
 
-def run_and_stream_lines(cmd: List[str], result: Optional[ProcessResult] = None) -> Iterable[str]:
+def run_and_stream_lines(cmd: List[Any], result: Optional[ProcessResult] = None) -> Iterable[str]:
     logging.debug(f"Running {' '.join([str(p) for p in cmd])}")
     with subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True) as process:
         try:
-            line = True
-            while line:
+            while True and process.stdout:
                 line = process.stdout.readline()
+                if not line:
+                    break
                 yield line.strip()
             logging.debug(f"Execution finished {cmd}")
         except GeneratorExit:

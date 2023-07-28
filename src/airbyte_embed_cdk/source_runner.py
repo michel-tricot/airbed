@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import tempfile
 from pathlib import Path
-from typing import Iterable
+from typing import Any, Iterable, Optional
 
 from airbyte_cdk.models import AirbyteMessage, ConfiguredAirbyteCatalog
 
@@ -78,7 +78,7 @@ class ContainerSourceRunner(SourceRunner):
         finally:
             shutil.rmtree(tmp_dir)
 
-    def read(self, config: TConfig, catalog: ConfiguredAirbyteCatalog, state: TState = None) -> Iterable[AirbyteMessage]:
+    def read(self, config: TConfig, catalog: ConfiguredAirbyteCatalog, state: Optional[TState] = None) -> Iterable[AirbyteMessage]:
         tmp_dir = Path(tempfile.mkdtemp())
         try:
             self._write_file(config, tmp_dir / "config.json")
@@ -110,9 +110,9 @@ class ContainerSourceRunner(SourceRunner):
         finally:
             shutil.rmtree(tmp_dir)
 
-    def _image_id(self):
+    def _image_id(self) -> str:
         return f"{self.image_name}:{self.image_tag}"
 
     @staticmethod
-    def _write_file(obj, dst: Path):
+    def _write_file(obj: Any, dst: Path) -> None:
         write_json(dst, obj)
