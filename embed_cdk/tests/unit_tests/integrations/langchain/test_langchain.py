@@ -1,11 +1,10 @@
 import unittest
 
 from airbyte_embed_cdk.integrations.langchain.loader import BaseLangchainLoader
-from airbyte_embed_cdk.platform.source_runner import ContainerSourceRunner
-from airbyte_embed_cdk.tools import read_json
+from airbyte_embed_cdk.source_runner import ContainerSourceRunner
+from airbyte_embed_cdk.tools import parse_json
 
-
-CONFIG = read_json("../../fixtures/config.json")
+CONFIG = parse_json('{"count": 10, "seed": 0, "parallelism": 1, "always_updated": false}')
 
 
 class LangchainTestCase(unittest.TestCase):
