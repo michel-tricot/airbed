@@ -4,7 +4,7 @@ from typing import Any, List
 
 
 @dataclass
-class LCDocument:
+class Document:
     page_content: str
     metadata: dict
 
@@ -13,32 +13,9 @@ class LCDocument:
         self.page_content = page_content
 
 
-@dataclass
-class Document:
-    text: str
-    metadata: dict
-
-    def __init__(self, text=None, metadata=None):
-        self.metadata = metadata
-        self.text = text
-
-    def to_langchain_format(self) -> LCDocument:
-        metadata = self.metadata or {}
-        return LCDocument(page_content=self.text, metadata=metadata)
-
-    @classmethod
-    def from_langchain_format(cls, doc: LCDocument) -> "Document":
-        return cls(text=doc.page_content, metadata=doc.metadata)
-
-
-class BaseReader(ABC):
+class BaseLoader(ABC):
     """Utilities for loading data from a directory."""
 
     @abstractmethod
-    def load_data(self, *args: Any, **load_kwargs: Any) -> List[Document]:
+    def load(self) -> List[Document]:
         """Load data from the input directory."""
-
-    def load_langchain_documents(self, **load_kwargs: Any) -> List[LCDocument]:
-        """Load data in LangChain document format."""
-        docs = self.load_data(**load_kwargs)
-        return [d.to_langchain_format() for d in docs]
