@@ -11,10 +11,9 @@ def run_and_stream_lines(cmd: List[Any], result: Optional[ProcessResult] = None)
     logging.debug(f"Running {' '.join([str(p) for p in cmd])}")
     with subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True) as process:
         try:
-            while True and process.stdout:
+            line = "initial"
+            while line and process.stdout:
                 line = process.stdout.readline()
-                if not line:
-                    break
                 yield line.strip()
             logging.debug(f"Execution finished {cmd}")
         except GeneratorExit:

@@ -6,7 +6,7 @@ from airbyte_embed_cdk.integrations.llama_index.reader import (
     default_transformer,
 )
 from airbyte_embed_cdk.models.source import TConfig, TState
-from airbyte_embed_cdk.source_runner import ContainerSourceRunner
+from airbyte_embed_cdk.container_source import ContainerSourceRunner
 
 
 class ReaderClass(Protocol):
