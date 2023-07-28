@@ -3,11 +3,15 @@ from typing import Generic, Iterable, List, TypeVar
 from airbyte_cdk.models import AirbyteRecordMessage, Type
 from pydantic.errors import ConfigError
 
-from ..base import create_full_catalog
+from ...catalog import create_full_catalog
 
 try:
     from langchain.document_loaders.base import BaseLoader
     from langchain.schema import Document
+except ImportError:
+    import warnings
+    warnings.warn('dependency not found, please install to enable langchain')
+    raise
 except (TypeError, ConfigError) as e:
     # can't use the real type because of pydantic versions mismatch
     from .hack_types import BaseLoader, Document

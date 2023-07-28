@@ -3,11 +3,15 @@ from typing import Generic, Iterable, List, TypeVar
 from airbyte_cdk.models import AirbyteRecordMessage, Type
 from pydantic.errors import ConfigError
 
-from ..base import create_full_catalog
+from ...catalog import create_full_catalog
 
 try:
     from llama_index.readers.base import BaseReader
     from llama_index.readers.schema.base import Document
+except ImportError:
+    import warnings
+    warnings.warn('dependency not found, please install to enable llama-index')
+    raise
 except (TypeError, ConfigError) as e:
     # can't use the real type because of pydantic versions mismatch
     from .hack_types import BaseReader, Document

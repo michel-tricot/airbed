@@ -4,6 +4,11 @@ from airbyte_embed_cdk.integrations.langchain.loader import default_transformer,
 from airbyte_embed_cdk.source_runner import ContainerSourceRunner
 
 
+class MetaConfig(type):
+    def __init__(cls, name, bases, dct):
+        cls.attr = 100
+
+
 def airbyte_langchain_loader(name, version):
     def constructor(config,
                     streams: List[str] = None,

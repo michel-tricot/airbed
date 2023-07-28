@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, TypeVar
 
 from airbyte_cdk.models import (
     AirbyteCatalog,
@@ -8,8 +8,10 @@ from airbyte_cdk.models import (
     DestinationSyncMode,
     SyncMode,
 )
+from airbyte_protocol.models import ConfiguredAirbyteCatalog, Type
 
-from airbyte_embed_cdk.tools import get_first
+from airbyte_embed_cdk.source_runner import SourceRunner
+from airbyte_embed_cdk.tools import get_first, get_first_message
 
 
 def get_stream(catalog: AirbyteCatalog, stream_name: str) -> Optional[AirbyteStream]:
@@ -50,3 +52,19 @@ def full_refresh_streams(catalog: AirbyteCatalog, stream_names: List[str]) -> Co
         configured_streams.append(to_configured_stream(stream))
 
     return to_configured_catalog(configured_streams)
+
+
+TConfig = TypeVar("TConfig")
+
+
+def create_full_catalog(source: SourceRunner, config: TConfig, streams: Optional[str] = None) -> ConfiguredAirbyteCatalog:
+    catalog_message = get_first_message(source.discover(config), Type.CATALOG)
+
+    if not catalog_message:
+        raise Exception("Can't retrieve catalog from source")
+
+    catalog = catalog_message.catalog
+    if not streams:
+        streams = get_all_stream_names(catalog)
+
+    return full_refresh_streams(catalog, streams)
