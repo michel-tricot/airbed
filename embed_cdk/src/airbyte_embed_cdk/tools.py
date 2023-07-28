@@ -1,13 +1,18 @@
 import json
 
 from json import JSONDecodeError
-from typing import Any, Iterable
+from typing import Any, Iterable, Optional
 
+from airbyte_cdk.models import AirbyteMessage, Type
 from pydantic.main import BaseModel
 
 
 def get_first(iterable: Iterable, predicate=lambda m: True):
     return next(filter(predicate, iterable), None)
+
+
+def get_first_message(messages: Iterable[AirbyteMessage], message_type: Type) -> Optional[AirbyteMessage]:
+    return get_first(messages, lambda m: m.type == message_type)
 
 
 def write_json(file, obj) -> None:

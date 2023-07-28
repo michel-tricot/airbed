@@ -2,7 +2,6 @@ import logging
 
 from abc import ABC, abstractmethod
 
-from airbyte_embed_cdk.platform.source_runner import SourceRunner
 from airbyte_cdk.models import (
     AirbyteCatalog,
     AirbyteConnectionStatus,
@@ -15,6 +14,8 @@ from airbyte_cdk.models import (
     ConnectorSpecification,
     Type,
 )
+
+from airbyte_embed_cdk.platform.source_runner import SourceRunner
 
 
 class MessageCollector(ABC):

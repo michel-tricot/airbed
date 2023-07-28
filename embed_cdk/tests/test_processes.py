@@ -1,22 +1,18 @@
 import unittest
 
-from airbyte_embed_cdk.tools.processes import run_and_stream_lines, ProcessResult
+from airbyte_embed_cdk.processes import ProcessResult, run_and_stream_lines
 
 
 class ProcessesTestCase(unittest.TestCase):
     def test_echo(self):
         process_result = ProcessResult()
-        self.assertEqual(
-            ["toto", ""],
-            list(run_and_stream_lines(["echo", "toto"], process_result)))
+        self.assertEqual(["toto", ""], list(run_and_stream_lines(["echo", "toto"], process_result)))
 
         self.assertEqual(process_result.returncode, 0)
 
     def test_echo_2(self):
         process_result = ProcessResult()
-        self.assertEqual(
-            ["toto", "toto", ""],
-            list(run_and_stream_lines(["echo", "toto\ntoto"], process_result)))
+        self.assertEqual(["toto", "toto", ""], list(run_and_stream_lines(["echo", "toto\ntoto"], process_result)))
 
         self.assertEqual(process_result.returncode, 0)
 
