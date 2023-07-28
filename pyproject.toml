@@ -16,8 +16,6 @@ langchain = ["langchain"]
 
 [tool.poetry.group.lint.dependencies]
 black = "^22.12.0"
-flake8-pyproject = "^1.2.3"
-pyproject-autoflake = "^1.0.2"
 ruff = "^0.0.280"
 
 [tool.poetry.group.dev.dependencies]
@@ -38,27 +36,6 @@ select = [
   "I",  # isort
 ]
 line-length = 140
-
-
-[tool.autoflake]
-recursive = true
-in-place = true
-expand-star-imports = true
-remove-all-unused-imports = true
-remove-unused-variables = true
-
-[tool.flake8]
-extend-exclude = [
-    ".venv",
-    "build",
-]
-max-complexity = 20
-extend-ignore = [
-  "E203",  # whitespace before ':' (conflicts with Black)
-  "E231",  # Bad trailing comma (conflicts with Black)
-  "E501",  # line too long (conflicts with Black)
-  "W503",  # line break before binary operator (conflicts with Black)
-]
 
 [tool.pytest.ini_options]
 testpaths = [

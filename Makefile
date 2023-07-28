@@ -7,15 +7,12 @@ format-black:
 lint-black:
 	poetry run black . --check
 
-lint-isort:
-	poetry run isort . --check
-
-lint-flake8:
-	poetry run flake8
+lint-ruff:
+	poetry run ruff .
 
 format: format-ruff format-black
 
-lint: lint-black lint-isort lint-flake8
+lint: lint-ruff lint-black
 
 test:
 	poetry run pytest
