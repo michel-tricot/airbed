@@ -11,7 +11,6 @@ from airbyte_embed_cdk.tools.processes import run_and_stream_lines
 from airbyte_embed_cdk.tools.tools import parse_json, write_json
 from airbyte_cdk.models import AirbyteMessage, ConfiguredAirbyteCatalog, Type
 
-
 TConfig = TypeVar("TConfig")
 TState = TypeVar("TState")
 
@@ -19,6 +18,7 @@ TState = TypeVar("TState")
 class SourceRunner(ABC, Generic[TConfig, TState]):
     @abstractmethod
     def spec(self) -> Iterable[AirbyteMessage]:
+        # Maybe we should return the spec directly?
         pass
 
     @abstractmethod
@@ -27,6 +27,7 @@ class SourceRunner(ABC, Generic[TConfig, TState]):
 
     @abstractmethod
     def discover(self, config: TConfig) -> Iterable[AirbyteMessage]:
+        # Maybe we should return the catalog directly?
         pass
 
     @abstractmethod
@@ -95,19 +96,18 @@ class ContainerSourceRunner(SourceRunner):
         try:
             self._write_file(config, tmp_dir, "config.json")
 
-            g = run_and_stream_lines(
-                [
-                    self.container_launcher,
-                    "run",
-                    "--rm",
-                    "-v",
-                    f"{tmp_dir}:{self.INPUT_FILES_PATH}",
-                    self._image_id(),
-                    "discover",
-                    "--config",
-                    os.path.join(self.INPUT_FILES_PATH, "config.json"),
-                ]
-            )
+            cmd = [
+                self.container_launcher,
+                "run",
+                "--rm",
+                "-v",
+                f"{tmp_dir}:{self.INPUT_FILES_PATH}",
+                self._image_id(),
+                "discover",
+                "--config",
+                os.path.join(self.INPUT_FILES_PATH, "config.json"),
+            ]
+            g = run_and_stream_lines(cmd)
             for message in self._parse_lines(g):
                 yield message
         finally:

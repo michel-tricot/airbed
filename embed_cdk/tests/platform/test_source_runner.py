@@ -14,7 +14,7 @@ class SourceRunnerTestCase(unittest.TestCase):
         self.assertEqual(1, len(cmd_output))
 
     def test_check(self):
-        config = read_json(os.path.join(os.path.dirname(__file__), "config.json"))
+        config = read_json(os.path.join(os.path.dirname(__file__), "../fixtures/config.json"))
 
         source_runner = ContainerSourceRunner("airbyte/source-faker", "4.0.0")
         cmd_output = source_runner.check(config=config)
@@ -23,7 +23,7 @@ class SourceRunnerTestCase(unittest.TestCase):
         self.assertEqual(1, len(cmd_output))
 
     def test_discover(self):
-        config = read_json(os.path.join(os.path.dirname(__file__), "config.json"))
+        config = read_json(os.path.join(os.path.dirname(__file__), "../fixtures/config.json"))
 
         source_runner = ContainerSourceRunner("airbyte/source-faker", "4.0.0")
         cmd_output = source_runner.discover(config=config)
@@ -32,8 +32,8 @@ class SourceRunnerTestCase(unittest.TestCase):
         self.assertEqual(1, len(cmd_output))
 
     def test_read_no_state(self):
-        config = read_json(os.path.join(os.path.dirname(__file__), "config.json"))
-        catalog = read_json(os.path.join(os.path.dirname(__file__), "configured_catalog.json"))
+        config = read_json(os.path.join(os.path.dirname(__file__), "../fixtures/config.json"))
+        catalog = read_json(os.path.join(os.path.dirname(__file__), "../fixtures/configured_catalog.json"))
 
         source_runner = ContainerSourceRunner("airbyte/source-faker", "4.0.0")
         cmd_output = source_runner.read(config=config, catalog=ConfiguredAirbyteCatalog.parse_obj(catalog))
@@ -42,9 +42,9 @@ class SourceRunnerTestCase(unittest.TestCase):
         self.assertEqual(30, len(cmd_output))
 
     def test_read_state(self):
-        config = read_json(os.path.join(os.path.dirname(__file__), "config.json"))
-        catalog = read_json(os.path.join(os.path.dirname(__file__), "configured_catalog.json"))
-        state = read_json(os.path.join(os.path.dirname(__file__), "state.json"))
+        config = read_json(os.path.join(os.path.dirname(__file__), "../fixtures/config.json"))
+        catalog = read_json(os.path.join(os.path.dirname(__file__), "../fixtures/configured_catalog.json"))
+        state = read_json(os.path.join(os.path.dirname(__file__), "../fixtures/state.json"))
 
         source_runner = ContainerSourceRunner("airbyte/source-faker", "4.0.0")
         cmd_output = source_runner.read(config=config, catalog=ConfiguredAirbyteCatalog.parse_obj(catalog), state=state)

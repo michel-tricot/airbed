@@ -1,9 +1,13 @@
 import json
 
 from json import JSONDecodeError
-from typing import Any
+from typing import Any, Iterable
 
 from pydantic.main import BaseModel
+
+
+def get_first(iterable: Iterable, predicate=lambda m: True):
+    return next(filter(predicate, iterable), None)
 
 
 def write_json(file, obj) -> None:
