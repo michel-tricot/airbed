@@ -10,3 +10,4 @@ class Fixtures:
     CATALOG = read_json(data_path / "catalog.json")
     CONFIGURED_CATALOG = read_json(data_path / "configured_catalog.json")
     STATE = read_json(data_path / "state.json")
+    BAD_CONFIGURED_CATALOG = read_json(data_path / "bad_configured_catalog.json")

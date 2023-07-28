@@ -34,6 +34,16 @@ class ContainerSourceRunnerTestCase(unittest.TestCase):
 
         self.assertEqual(30, len(cmd_output))
 
+    def test_error(self):
+        source_runner = ContainerSourceRunner("airbyte/source-faker", "4.0.0")
+        cmd_output = source_runner.read(config=Fixtures.CONFIG, catalog=ConfiguredAirbyteCatalog.parse_obj(Fixtures.BAD_CONFIGURED_CATALOG))
+        messages = list(cmd_output)
+        cmd_output = list(filter(lambda m: m.type == Type.RECORD, messages))
+        logs = list(filter(lambda m: m.type == Type.LOG, messages))
+
+        self.assertTrue(len(logs) > 0)
+        self.assertEqual(0, len(cmd_output))
+
     def test_read_state(self):
         source_runner = ContainerSourceRunner("airbyte/source-faker", "4.0.0")
         cmd_output = source_runner.read(

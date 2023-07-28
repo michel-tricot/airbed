@@ -1,8 +1,7 @@
-import logging
 from abc import ABC, abstractmethod
 from typing import Generic, Iterable, Optional, TypeVar
 
-from airbyte_protocol.models import AirbyteMessage, ConfiguredAirbyteCatalog, Type
+from airbyte_protocol.models import AirbyteLogMessage, AirbyteMessage, ConfiguredAirbyteCatalog, Level, Type
 
 from airbyte_embed_cdk.tools import parse_json
 
@@ -35,9 +34,8 @@ class SourceRunner(ABC, Generic[TConfig, TState]):
             parsed_line = parse_json(line)
             if parsed_line:
                 obj = AirbyteMessage.parse_obj(parsed_line)
-                if obj.type != Type.LOG:
-                    yield obj
-                else:
-                    logging.info(obj)
             else:
-                logging.info(line)
+                obj = AirbyteMessage.parse_obj(
+                    {"type": Type.LOG, "log": AirbyteLogMessage.parse_obj({"level": Level.DEBUG, "message": line})}
+                )
+            yield obj

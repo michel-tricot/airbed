@@ -3,12 +3,12 @@ import shutil
 import subprocess
 import tempfile
 from pathlib import Path
-from typing import Any, Iterable, Optional, List
+from typing import Any, Iterable, List, Optional
 
 from airbyte_cdk.models import AirbyteMessage, ConfiguredAirbyteCatalog
 
 from airbyte_embed_cdk.models.source import SourceRunner, TConfig, TState
-from airbyte_embed_cdk.processes import run_and_stream_lines, ProcessResult
+from airbyte_embed_cdk.processes import ProcessResult, run_and_stream_lines
 from airbyte_embed_cdk.tools import write_json
 
 CONTAINER_RUNNER = os.getenv("AIRBYTE_CONTAINER_RUNNER", "docker")
@@ -32,6 +32,7 @@ class ContainerSourceRunner(SourceRunner):
 
     def spec(self) -> Iterable[AirbyteMessage]:
         cmd = [self.container_runner, "run", "--rm", self._image_id(), "spec"]
+
         yield from self._run(cmd)
 
     def check(self, config: TConfig) -> Iterable[AirbyteMessage]:
