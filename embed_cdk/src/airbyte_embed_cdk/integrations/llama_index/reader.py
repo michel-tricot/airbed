@@ -4,21 +4,19 @@ from airbyte_cdk.models import AirbyteRecordMessage, ConfiguredAirbyteCatalog, T
 from llama_index.readers.base import BaseReader
 from llama_index.readers.schema.base import Document
 
+from airbyte_embed_cdk.platform.catalog import full_refresh_streams
 from airbyte_embed_cdk.platform.source_runner import SourceRunner
+from airbyte_embed_cdk.tools import get_first_message
 
 
 def default_transformer(record: AirbyteRecordMessage) -> Document:
     document = Document(
-        text=None,
+        # TODO: terrible transformation
+        text=str(record.data),
         metadata={"stream_name": record.stream, "emitted_at": record.emitted_at},
     )
 
     return document
-
-
-class DocumentTransformer:
-    def __init__(self, source: SourceRunner):
-        pass
 
 
 TConfig = TypeVar("TConfig")
@@ -34,12 +32,17 @@ class BaseLLamaIndexReader(BaseReader, Generic[TConfig, TState]):
         return list(self._stream_load_data(config, streams, state))
 
     def _stream_load_data(self, config: TConfig, streams: List[str], state: TState) -> Iterable[Document]:
-        configured_catalog = self._to_configured_catalog(streams)
+        configured_catalog = self._to_configured_catalog(config, streams)
 
         for message in self.source.read(config, configured_catalog, state):
             if message.type == Type.RECORD:
                 # TODO: do we want to have accumulation mechanism?
                 yield self.document_transformer(message.record)
 
-    def _to_configured_catalog(self, streams: List[str]) -> ConfiguredAirbyteCatalog:
-        pass
+    def _to_configured_catalog(self, config, streams) -> ConfiguredAirbyteCatalog:
+        catalog_message = get_first_message(self.source.discover(config), Type.CATALOG)
+
+        if not catalog_message:
+            raise Exception("Can't retrieve catalog from source")
+
+        return full_refresh_streams(catalog_message.catalog, streams)
