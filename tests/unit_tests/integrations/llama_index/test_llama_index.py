@@ -1,16 +1,15 @@
 import unittest
 
-from airbyte_embed_cdk.integrations.llama_index.reader import BaseLLamaIndexReader
-from airbyte_embed_cdk.source_runner import ContainerSourceRunner
+from airbyte_embed_cdk.integrations.llama_index import airbyte_llamaindex_reader
 
 from unit_tests.fixtures import Fixtures
+
+FakerReader = airbyte_llamaindex_reader("airbyte/source-faker", "4.0.0")
 
 
 class LLamaIndexTestCase(unittest.TestCase):
     def test_main(self):
-        source_runner = ContainerSourceRunner("airbyte/source-faker", "4.0.0")
-
-        reader = BaseLLamaIndexReader(source_runner, config=Fixtures.CONFIG)
+        reader = FakerReader(config=Fixtures.CONFIG)
         data = reader.load_data(["users"])
 
         self.assertEqual(10, len(data))

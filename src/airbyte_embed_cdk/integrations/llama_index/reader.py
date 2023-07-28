@@ -19,6 +19,8 @@ except (TypeError, ConfigError):
 
 from airbyte_embed_cdk.models.source import SourceRunner, TConfig, TState
 
+Transformer = Callable[[AirbyteRecordMessage], Document]
+
 
 def default_transformer(record: AirbyteRecordMessage) -> Document:
     document = Document(
@@ -35,7 +37,7 @@ class BaseLLamaIndexReader(BaseReader, Generic[TConfig, TState]):
         self,
         source: SourceRunner[TConfig, TState],
         config: TConfig,
-        document_transformer: Callable[[AirbyteRecordMessage], Document] = default_transformer,
+        document_transformer: Transformer = default_transformer,
     ):
         self.source = source
         self.config = config
