@@ -7,8 +7,8 @@ from airbyte_cdk.models import (
     ConfiguredAirbyteStream,
     DestinationSyncMode,
     SyncMode,
+    Type,
 )
-from airbyte_protocol.models import ConfiguredAirbyteCatalog, Type
 
 from airbyte_embed_cdk.source_runner import SourceRunner
 from airbyte_embed_cdk.tools import get_first, get_first_message

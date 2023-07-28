@@ -38,6 +38,11 @@ lines_after_imports = 2
 src_paths = ["src", "tests"]
 
 [tool.autoflake]
+recursive = true
+in-place = true
+expand-star-imports = true
+remove-all-unused-imports = true
+remove-unused-variables = true
 
 [tool.flake8]
 extend-exclude = [

@@ -1,3 +1,6 @@
+format-autoflake:
+	poetry run pautoflake .
+
 format-black:
 	poetry run black .
 
@@ -13,6 +16,6 @@ lint-isort:
 lint-flake8:
 	poetry run flake8
 
-format: format-black format-isort
+format: format-autoflake format-black format-isort
 
 lint: lint-black lint-isort lint-flake8

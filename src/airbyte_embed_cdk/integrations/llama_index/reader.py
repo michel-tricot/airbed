@@ -14,7 +14,7 @@ except ImportError:
 
     warnings.warn("dependency not found, please install to enable llama-index")
     raise
-except (TypeError, ConfigError) as e:
+except (TypeError, ConfigError):
     # can't use the real type because of pydantic versions mismatch
     from .hack_types import BaseReader, Document
 

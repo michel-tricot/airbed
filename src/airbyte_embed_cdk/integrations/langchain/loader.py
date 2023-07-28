@@ -14,11 +14,11 @@ except ImportError:
 
     warnings.warn("dependency not found, please install to enable langchain")
     raise
-except (TypeError, ConfigError) as e:
+except (TypeError, ConfigError):
     # can't use the real type because of pydantic versions mismatch
     from .hack_types import BaseLoader, Document
 
-from airbyte_embed_cdk.source_runner import ContainerSourceRunner, SourceRunner
+from airbyte_embed_cdk.source_runner import SourceRunner
 
 
 def default_transformer(record: AirbyteRecordMessage) -> Document:
