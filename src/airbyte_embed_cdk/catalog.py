@@ -23,11 +23,11 @@ def get_all_stream_names(catalog: AirbyteCatalog) -> List[str]:
 
 
 def to_configured_stream(
-        stream: AirbyteStream,
-        sync_mode: SyncMode = SyncMode.full_refresh,
-        destination_sync_mode: DestinationSyncMode = DestinationSyncMode.overwrite,
-        cursor_field: Optional[List[str]] = None,
-        primary_key: Optional[List[List[str]]] = None,
+    stream: AirbyteStream,
+    sync_mode: SyncMode = SyncMode.full_refresh,
+    destination_sync_mode: DestinationSyncMode = DestinationSyncMode.overwrite,
+    cursor_field: Optional[List[str]] = None,
+    primary_key: Optional[List[List[str]]] = None,
 ) -> ConfiguredAirbyteStream:
     return ConfiguredAirbyteStream.parse_obj(
         {

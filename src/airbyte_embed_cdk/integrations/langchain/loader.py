@@ -5,18 +5,20 @@ from pydantic.errors import ConfigError
 
 from ...catalog import create_full_catalog
 
+
 try:
     from langchain.document_loaders.base import BaseLoader
     from langchain.schema import Document
 except ImportError:
     import warnings
-    warnings.warn('dependency not found, please install to enable langchain')
+
+    warnings.warn("dependency not found, please install to enable langchain")
     raise
 except (TypeError, ConfigError) as e:
     # can't use the real type because of pydantic versions mismatch
     from .hack_types import BaseLoader, Document
 
-from airbyte_embed_cdk.source_runner import SourceRunner, ContainerSourceRunner
+from airbyte_embed_cdk.source_runner import ContainerSourceRunner, SourceRunner
 
 
 def default_transformer(record: AirbyteRecordMessage) -> Document:
@@ -35,12 +37,12 @@ TState = TypeVar("TState")
 
 class BaseLangchainLoader(BaseLoader, Generic[TConfig, TState]):
     def __init__(
-            self,
-            source: SourceRunner[TConfig, TState],
-            config: TConfig,
-            streams: List[str] = None,
-            state: TState = None,
-            document_transformer=default_transformer,
+        self,
+        source: SourceRunner[TConfig, TState],
+        config: TConfig,
+        streams: List[str] = None,
+        state: TState = None,
+        document_transformer=default_transformer,
     ):
         self.source = source
         self.config = config
