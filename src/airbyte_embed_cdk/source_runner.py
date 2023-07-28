@@ -2,7 +2,6 @@ import os.path
 import shutil
 import subprocess
 import tempfile
-
 from pathlib import Path
 from typing import Iterable
 
@@ -11,7 +10,6 @@ from airbyte_cdk.models import AirbyteMessage, ConfiguredAirbyteCatalog
 from airbyte_embed_cdk.models.source import SourceRunner, TConfig, TState
 from airbyte_embed_cdk.processes import run_and_stream_lines
 from airbyte_embed_cdk.tools import write_json
-
 
 CONTAINER_RUNNER = os.getenv("AIRBYTE_CONTAINER_RUNNER", "docker")
 

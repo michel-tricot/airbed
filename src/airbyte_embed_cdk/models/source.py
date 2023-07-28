@@ -1,12 +1,10 @@
 import logging
-
 from abc import ABC, abstractmethod
 from typing import Generic, Iterable, TypeVar
 
 from airbyte_protocol.models import AirbyteMessage, ConfiguredAirbyteCatalog, Type
 
 from airbyte_embed_cdk.tools import parse_json
-
 
 TConfig = TypeVar("TConfig")
 TState = TypeVar("TState")

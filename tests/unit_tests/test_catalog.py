@@ -2,7 +2,6 @@ import os.path
 import unittest
 
 from airbyte_cdk.models import AirbyteCatalog
-
 from airbyte_embed_cdk.catalog import get_stream
 from airbyte_embed_cdk.tools import read_json
 

@@ -2,7 +2,6 @@ from pathlib import Path
 
 from airbyte_embed_cdk.tools import read_json
 
-
 data_path = Path(__file__).parent / "data"
 
 

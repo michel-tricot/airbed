@@ -5,7 +5,6 @@ from pydantic.errors import ConfigError
 
 from ...catalog import create_full_catalog
 
-
 try:
     from llama_index.readers.base import BaseReader
     from llama_index.readers.schema.base import Document

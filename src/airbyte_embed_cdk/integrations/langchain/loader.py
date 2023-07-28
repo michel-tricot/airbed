@@ -5,7 +5,6 @@ from pydantic.errors import ConfigError
 
 from ...catalog import create_full_catalog
 
-
 try:
     from langchain.document_loaders.base import BaseLoader
     from langchain.schema import Document

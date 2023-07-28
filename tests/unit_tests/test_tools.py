@@ -1,7 +1,6 @@
 import unittest
 
 from airbyte_cdk.models import AirbyteMessage, Type
-
 from airbyte_embed_cdk.tools import get_first, get_first_message
 
 
