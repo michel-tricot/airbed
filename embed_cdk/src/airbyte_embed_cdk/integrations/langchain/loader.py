@@ -12,7 +12,7 @@ except (TypeError, ConfigError) as e:
     # can't use the real type because of pydantic versions mismatch
     from .hack_types import BaseLoader, Document
 
-from airbyte_embed_cdk.source_runner import SourceRunner
+from airbyte_embed_cdk.source_runner import SourceRunner, ContainerSourceRunner
 
 
 def default_transformer(record: AirbyteRecordMessage) -> Document:
