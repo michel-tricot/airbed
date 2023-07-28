@@ -11,7 +11,7 @@ lint-isort:
 	poetry run isort . --check
 
 lint-flake8:
-	poetry run flake
+	poetry run flake8
 
 format: format-black format-isort
 

@@ -19,6 +19,7 @@ pytest = "^7.4.0"
 black = "^22.12.0"
 isort = "^5.12.0"
 flake8-pyproject = "^1.2.3"
+pyproject-autoflake = "^1.0.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -35,6 +36,8 @@ combine_as_imports = true
 lines_between_types = 1
 lines_after_imports = 2
 src_paths = ["src", "tests"]
+
+[tool.autoflake]
 
 [tool.flake8]
 extend-exclude = [
