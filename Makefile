@@ -19,3 +19,6 @@ lint-flake8:
 format: format-autoflake format-black format-isort
 
 lint: lint-black lint-isort lint-flake8
+
+test:
+	poetry run pytest
