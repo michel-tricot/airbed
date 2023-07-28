@@ -3,7 +3,7 @@ from typing import Generic, Iterable, List
 from airbyte_cdk.models import AirbyteRecordMessage, Type
 from pydantic.errors import ConfigError
 
-from ...catalog import create_full_catalog
+from airbyte_embed_cdk.catalog import create_full_catalog
 
 try:
     from llama_index.readers.base import BaseReader
@@ -17,12 +17,12 @@ except (TypeError, ConfigError):
     # can't use the real type because of pydantic versions mismatch
     from .hack_types import BaseReader, Document
 
-from ...models.source import SourceRunner, TConfig, TState
+from airbyte_embed_cdk.models.source import SourceRunner, TConfig, TState
 
 
 def default_transformer(record: AirbyteRecordMessage) -> Document:
     document = Document(
-        # TODO: terrible transformation
+        # TODO(michel): terrible transformation
         text=str(record.data),
         metadata={"stream_name": record.stream, "emitted_at": record.emitted_at},
     )
@@ -44,5 +44,5 @@ class BaseLLamaIndexReader(BaseReader, Generic[TConfig, TState]):
 
         for message in self.source.read(self.config, configured_catalog, state):
             if message.type == Type.RECORD:
-                # TODO: do we want to have accumulation mechanism?
+                # TODO(michel): do we want to have accumulation mechanism?
                 yield self.document_transformer(message.record)
