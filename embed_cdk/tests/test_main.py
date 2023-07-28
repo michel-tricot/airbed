@@ -4,7 +4,8 @@ from airbyte_embed_cdk.integrations.llama_index.reader import BaseLLamaIndexRead
 from airbyte_embed_cdk.platform.source_runner import ContainerSourceRunner
 from airbyte_embed_cdk.tools import read_json
 
-CONFIG = read_json('fixtures/config.json')
+
+CONFIG = read_json("fixtures/config.json")
 
 
 class MainTestCase(unittest.TestCase):

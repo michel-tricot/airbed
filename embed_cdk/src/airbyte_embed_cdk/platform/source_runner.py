@@ -14,6 +14,7 @@ from pydantic.typing import PathLike
 from airbyte_embed_cdk.processes import run_and_stream_lines
 from airbyte_embed_cdk.tools import parse_json, write_json
 
+
 TConfig = TypeVar("TConfig")
 TState = TypeVar("TState")
 

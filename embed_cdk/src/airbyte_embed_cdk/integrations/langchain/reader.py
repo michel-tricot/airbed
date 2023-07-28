@@ -2,17 +2,14 @@ from typing import Generic, Iterable, List, TypeVar
 
 from airbyte_cdk.models import AirbyteRecordMessage, ConfiguredAirbyteCatalog, Type
 
-
-try:
-    from llama_index.readers.base import BaseReader
-    from llama_index.readers.schema.base import Document
-except TypeError as e:
-    # can't use the real type because of pydantic versions mismatch
-    from .hack_types import BaseReader, Document
-
 from airbyte_embed_cdk.platform.catalog import full_refresh_streams
 from airbyte_embed_cdk.platform.source_runner import SourceRunner
 from airbyte_embed_cdk.tools import get_first_message
+
+# can't use the real type because of pydantic versions mis-match
+# from llama_index.readers.base import BaseReader
+# from llama_index.readers.schema.base import Document
+from .hack_types import BaseReader, Document
 
 
 def default_transformer(record: AirbyteRecordMessage) -> Document:

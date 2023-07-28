@@ -6,6 +6,7 @@ from airbyte_embed_cdk.tools import read_json
 
 
 def main():
+    pass
 
 
 if __name__ == "__main__":

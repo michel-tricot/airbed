@@ -5,8 +5,8 @@ from airbyte_cdk.models import (
     AirbyteStream,
     ConfiguredAirbyteCatalog,
     ConfiguredAirbyteStream,
+    DestinationSyncMode,
     SyncMode,
-    DestinationSyncMode
 )
 
 from airbyte_embed_cdk.tools import get_first
@@ -17,19 +17,21 @@ def get_stream(catalog: AirbyteCatalog, stream_name: str) -> Optional[AirbyteStr
 
 
 def to_configured_stream(
-        stream: AirbyteStream,
-        sync_mode: SyncMode = SyncMode.full_refresh,
-        destination_sync_mode: DestinationSyncMode = DestinationSyncMode.overwrite,
-        cursor_field: Optional[List[str]] = None,
-        primary_key: Optional[List[List[str]]] = None,
+    stream: AirbyteStream,
+    sync_mode: SyncMode = SyncMode.full_refresh,
+    destination_sync_mode: DestinationSyncMode = DestinationSyncMode.overwrite,
+    cursor_field: Optional[List[str]] = None,
+    primary_key: Optional[List[List[str]]] = None,
 ) -> ConfiguredAirbyteStream:
-    return ConfiguredAirbyteStream.parse_obj({
-        "stream": stream,
-        "sync_mode": sync_mode,
-        "destination_sync_mode": destination_sync_mode,
-        "cursor_field": cursor_field,
-        "primary_key": primary_key
-    })
+    return ConfiguredAirbyteStream.parse_obj(
+        {
+            "stream": stream,
+            "sync_mode": sync_mode,
+            "destination_sync_mode": destination_sync_mode,
+            "cursor_field": cursor_field,
+            "primary_key": primary_key,
+        }
+    )
 
 
 def to_configured_catalog(configured_streams: List[ConfiguredAirbyteStream]):
