@@ -1,7 +1,4 @@
 ```
-# Some configs I set
-poetry config virtualenvs.prefer-active-python true
-poetry config virtualenvs.in-project true
 
 # Get started
 poetry install

@@ -9,7 +9,7 @@ class ProcessResult:
 
 
 def run_and_stream_lines(cmd: List[str], result: Optional[ProcessResult] = None) -> Iterable[str]:
-    logging.debug(f"Running {' '.join(cmd)}")
+    logging.debug(f"Running {' '.join([str(p) for p in cmd])}")
     with subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True) as process:
         try:
             line = True
