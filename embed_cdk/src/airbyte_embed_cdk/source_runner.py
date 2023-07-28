@@ -14,7 +14,6 @@ from pydantic.typing import PathLike
 from airbyte_embed_cdk.processes import run_and_stream_lines
 from airbyte_embed_cdk.tools import parse_json, write_json
 
-
 TConfig = TypeVar("TConfig")
 TState = TypeVar("TState")
 
@@ -52,24 +51,27 @@ class SourceRunner(ABC, Generic[TConfig, TState]):
                 logging.info(line)
 
 
+CONTAINER_RUNNER = os.getenv("AIRBYTE_CONTAINER_RUNNER", "docker")
+
+
 class ContainerSourceRunner(SourceRunner):
     INPUT_FILES_PATH = Path("/input_files")
 
-    def __init__(self, image_name: str, image_tag: str, container_launcher: str = "docker"):
+    def __init__(self, image_name: str, image_tag: str):
         self.image_name = image_name
         self.image_tag = image_tag
-        self.container_launcher = container_launcher
+        self.container_runner = CONTAINER_RUNNER
 
         subprocess.check_output(
             [
-                self.container_launcher,
+                self.container_runner,
                 "pull",
                 self._image_id(),
             ]
         )
 
     def spec(self) -> Iterable[AirbyteMessage]:
-        g = run_and_stream_lines([self.container_launcher, "run", "--rm", self._image_id(), "spec"])
+        g = run_and_stream_lines([self.container_runner, "run", "--rm", self._image_id(), "spec"])
         return self._parse_lines(g)
 
     def check(self, config: TConfig) -> Iterable[AirbyteMessage]:
@@ -78,7 +80,7 @@ class ContainerSourceRunner(SourceRunner):
             self._write_file(config, tmp_dir / "config.json")
 
             cmd = [
-                self.container_launcher,
+                self.container_runner,
                 "run",
                 "--rm",
                 "-v",
@@ -100,7 +102,7 @@ class ContainerSourceRunner(SourceRunner):
             self._write_file(config, tmp_dir / "config.json")
 
             cmd = [
-                self.container_launcher,
+                self.container_runner,
                 "run",
                 "--rm",
                 "-v",
@@ -123,7 +125,7 @@ class ContainerSourceRunner(SourceRunner):
             self._write_file(catalog, tmp_dir / "catalog.json")
 
             cmd = [
-                self.container_launcher,
+                self.container_runner,
                 "run",
                 "--rm",
                 "-v",
