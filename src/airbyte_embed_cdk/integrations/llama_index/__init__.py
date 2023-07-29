@@ -33,10 +33,9 @@ def cdk_airbyte_container_llamaindex_reader(source_class: type[Source]) -> Reade
     return constructor
 
 
-def container_airbyte_llamaindex_reader(name: str, version: str) -> ReaderClass:
+def container_airbyte_llamaindex_reader(name: str, default_version: str) -> ReaderClass:
     def constructor(
-        config: TConfig,
-        document_transformer: Transformer = default_transformer,
+        config: TConfig, document_transformer: Transformer = default_transformer, version: str = default_version
     ) -> BaseLLamaIndexReader[TConfig, TState]:
         # TODO(michel): How early should we check the config?
         source = ContainerSourceRunner(name, version)

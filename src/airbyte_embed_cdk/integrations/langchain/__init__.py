@@ -38,12 +38,13 @@ def cdk_airbyte_container_langchain_reader(source_class: type[Source]) -> Loader
     return constructor
 
 
-def container_airbyte_langchain_loader(name: str, version: str) -> LoaderClass:
+def container_airbyte_langchain_loader(name: str, default_version: str) -> LoaderClass:
     def constructor(
         config: TConfig,
         stream: str,
         state: Optional[TState] = None,
         document_transformer: Transformer = default_transformer,
+        version: str = default_version,
     ) -> BaseLangchainLoader[TConfig, TState]:
         # TODO(michel): How early should we check the config?
         source = LoggingSourceRunner(ContainerSourceRunner(name, version))
