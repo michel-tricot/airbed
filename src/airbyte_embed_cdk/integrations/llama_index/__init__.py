@@ -1,4 +1,4 @@
-from typing import Optional, Protocol
+from typing import Protocol
 
 from airbyte_embed_cdk.integrations.llama_index.reader import (
     BaseLLamaIndexReader,
@@ -13,7 +13,6 @@ class ReaderClass(Protocol):
     def __call__(
         self,
         config: TConfig,
-        state: Optional[TState],
         document_transformer: Transformer,
     ) -> BaseLLamaIndexReader[TConfig, TState]:
         pass
@@ -22,11 +21,10 @@ class ReaderClass(Protocol):
 def airbyte_llamaindex_reader(name: str, version: str) -> ReaderClass:
     def constructor(
         config: TConfig,
-        state: Optional[TState] = None,
         document_transformer: Transformer = default_transformer,
     ) -> BaseLLamaIndexReader[TConfig, TState]:
         # TODO(michel): How early should we check the config?
         source = ContainerSourceRunner(name, version)
-        return BaseLLamaIndexReader(source, config, state, document_transformer)
+        return BaseLLamaIndexReader(source, config, document_transformer)
 
     return constructor

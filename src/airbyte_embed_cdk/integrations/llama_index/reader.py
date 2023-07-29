@@ -38,15 +38,14 @@ class BaseLLamaIndexReader(BaseReader, EmbeddedIntegration[TConfig, TState, Docu
         self,
         source: SourceRunner[TConfig, TState],
         config: TConfig,
-        state: Optional[TState] = None,
         document_transformer: Transformer = default_transformer,
     ):
-        super().__init__(source, config, state)
+        super().__init__(source, config)
 
         self.document_transformer = document_transformer
 
-    def load_data(self, stream: str) -> List[Document]:
-        return list(self._load_data(stream))
+    def load_data(self, stream: str, state: Optional[TState] = None) -> List[Document]:
+        return list(self._load_data(stream, state))
 
     def _handle_record(self, record: AirbyteRecordMessage) -> Optional[Document]:
         return self.document_transformer(record)

@@ -41,12 +41,14 @@ class BaseLangchainLoader(BaseLoader, EmbeddedIntegration[TConfig, TState, Docum
         state: Optional[TState] = None,
         document_transformer: Transformer = default_transformer,
     ):
-        super().__init__(source, config, state)
+        super().__init__(source, config)
         self.stream = stream
+        self.state = state
+
         self.document_transformer = document_transformer
 
     def load(self) -> List[Document]:
-        return list(self._load_data(self.stream))
+        return list(self._load_data(self.stream, self.state))
 
     def _handle_record(self, record: AirbyteRecordMessage) -> Optional[Document]:
         return self.document_transformer(record)
