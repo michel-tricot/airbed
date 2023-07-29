@@ -14,7 +14,7 @@ TState = TState
 class SourceRunner(ABC, Generic[TConfig, TState]):
     @abstractmethod
     def spec(self) -> Iterable[AirbyteMessage]:
-        # Maybe we should return the spec directly?
+        # FIXME: Maybe we should return the spec directly?
         pass
 
     @abstractmethod
@@ -23,7 +23,7 @@ class SourceRunner(ABC, Generic[TConfig, TState]):
 
     @abstractmethod
     def discover(self, config: TConfig) -> Iterable[AirbyteMessage]:
-        # Maybe we should return the catalog directly?
+        # FIXME: Maybe we should return the catalog directly?
         pass
 
     @abstractmethod
