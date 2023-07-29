@@ -1,10 +1,10 @@
 import unittest
 
-from airbyte_embed_cdk.integrations.llama_index import airbyte_llamaindex_reader
+from airbyte_embed_cdk.integrations.llama_index import container_airbyte_llamaindex_reader
 
 from unit_tests.fixtures import Fixtures
 
-FakerReader = airbyte_llamaindex_reader("airbyte/source-faker", "4.0.0")
+FakerReader = container_airbyte_llamaindex_reader("airbyte/source-faker", "4.0.0")
 
 
 class LLamaIndexTestCase(unittest.TestCase):

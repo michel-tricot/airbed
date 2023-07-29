@@ -4,25 +4,25 @@
 ## Langchain
 
 ```python
-from airbyte_embed_cdk.integrations.langchain import airbyte_langchain_loader
+from airbyte_embed_cdk.integrations.langchain import container_airbyte_langchain_loader
 
-FakerLoader = airbyte_langchain_loader("airbyte/source-faker", "4.0.0")
+FakerLoader = container_airbyte_langchain_loader("airbyte/source-faker", "4.0.0")
 
 config = ...
-reader = FakerLoader(config=config, streams=["users"])
+reader = FakerLoader(config=config, stream="users")
 data = reader.load()
 ```
 
 ## LLamaIndex
 
 ```python
-from airbyte_embed_cdk.integrations.llama_index import airbyte_llamaindex_reader
+from airbyte_embed_cdk.integrations.llama_index import container_airbyte_llamaindex_reader
 
-FakerReader = airbyte_llamaindex_reader("airbyte/source-faker", "4.0.0")
+FakerReader = container_airbyte_llamaindex_reader("airbyte/source-faker", "4.0.0")
 
 config = ...
 reader = FakerReader(config=config)
-data = reader.load_data(["users"])
+data = reader.load_data("users")
 ```
 
 # Current issues
