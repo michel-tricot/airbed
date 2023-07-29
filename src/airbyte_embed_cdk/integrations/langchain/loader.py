@@ -1,10 +1,9 @@
-from typing import Callable, Generic, Iterable, List, Optional
+from typing import Callable, Generic, List, Optional
 
-from airbyte_cdk.models import AirbyteRecordMessage, Type
-from airbyte_protocol.models import AirbyteStateMessage
+from airbyte_cdk.models import AirbyteRecordMessage
 from pydantic.errors import ConfigError
 
-from airbyte_embed_cdk.catalog import create_full_refresh_catalog
+from ..base_integration import EmbeddedIntegration
 
 try:
     from langchain.document_loaders.base import BaseLoader
@@ -33,7 +32,7 @@ def default_transformer(record: AirbyteRecordMessage) -> Document:
     return document
 
 
-class BaseLangchainLoader(BaseLoader, Generic[TConfig, TState]):
+class BaseLangchainLoader(BaseLoader, EmbeddedIntegration[TConfig, TState, Document], Generic[TConfig, TState]):
     def __init__(
         self,
         source: SourceRunner[TConfig, TState],
@@ -42,23 +41,12 @@ class BaseLangchainLoader(BaseLoader, Generic[TConfig, TState]):
         state: Optional[TState] = None,
         document_transformer: Transformer = default_transformer,
     ):
-        self.source = source
-        self.config = config
+        super().__init__(source, config, state)
         self.stream = stream
-        self.state = state
         self.document_transformer = document_transformer
 
-        self.last_state: Optional[AirbyteStateMessage] = None
-
     def load(self) -> List[Document]:
-        return list(self._stream_load_data())
+        return list(self._load_data(self.stream))
 
-    def _stream_load_data(self) -> Iterable[Document]:
-        configured_catalog = create_full_refresh_catalog(self.source, self.config, [self.stream])
-
-        for message in self.source.read(self.config, configured_catalog, self.state):
-            if message.type == Type.RECORD:
-                # TODO(michel): do we want to have accumulation mechanism?
-                yield self.document_transformer(message.record)
-            elif message.type is Type.STATE and message.state:
-                self.last_state = message.state
+    def _handle_record(self, record: AirbyteRecordMessage) -> Optional[Document]:
+        return self.document_transformer(record)

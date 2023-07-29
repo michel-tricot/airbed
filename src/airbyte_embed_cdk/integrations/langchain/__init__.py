@@ -1,4 +1,4 @@
-from typing import List, Optional, Protocol
+from typing import Optional, Protocol
 
 from airbyte_embed_cdk.integrations.langchain.loader import (
     BaseLangchainLoader,
@@ -15,8 +15,8 @@ class LoaderClass(Protocol):
         self,
         config: TConfig,
         stream: str,
-        state: Optional[TState] = None,
-        document_transformer: Transformer = default_transformer,
+        state: Optional[TState],
+        document_transformer: Transformer,
     ) -> BaseLangchainLoader[TConfig, TState]:
         pass
 
