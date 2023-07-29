@@ -35,7 +35,5 @@ class SourceRunner(ABC, Generic[TConfig, TState]):
             if parsed_line:
                 obj = AirbyteMessage.parse_obj(parsed_line)
             else:
-                obj = AirbyteMessage.parse_obj(
-                    {"type": Type.LOG, "log": AirbyteLogMessage.parse_obj({"level": Level.DEBUG, "message": line})}
-                )
+                obj = AirbyteMessage(type=Type.LOG, log=AirbyteLogMessage(level=Level.DEBUG, message=line))
             yield obj

@@ -14,7 +14,7 @@ class LoaderClass(Protocol):
     def __call__(
         self,
         config: TConfig,
-        streams: Optional[List[str]] = None,
+        stream: str,
         state: Optional[TState] = None,
         document_transformer: Transformer = default_transformer,
     ) -> BaseLangchainLoader[TConfig, TState]:
@@ -24,12 +24,12 @@ class LoaderClass(Protocol):
 def airbyte_langchain_loader(name: str, version: str) -> LoaderClass:
     def constructor(
         config: TConfig,
-        streams: Optional[List[str]] = None,
+        stream: str,
         state: Optional[TState] = None,
         document_transformer: Transformer = default_transformer,
     ) -> BaseLangchainLoader[TConfig, TState]:
         # TODO(michel): How early should we check the config?
         source = LoggingSourceRunner(ContainerSourceRunner(name, version))
-        return BaseLangchainLoader(source, config, streams, state, document_transformer)
+        return BaseLangchainLoader(source, config, stream, state, document_transformer)
 
     return constructor

@@ -1,9 +1,10 @@
 from typing import Callable, Generic, Iterable, List, Optional
 
 from airbyte_cdk.models import AirbyteRecordMessage, Type
+from airbyte_protocol.models import AirbyteStateMessage
 from pydantic.errors import ConfigError
 
-from airbyte_embed_cdk.catalog import create_full_catalog
+from airbyte_embed_cdk.catalog import create_full_refresh_catalog
 
 try:
     from langchain.document_loaders.base import BaseLoader
@@ -37,23 +38,27 @@ class BaseLangchainLoader(BaseLoader, Generic[TConfig, TState]):
         self,
         source: SourceRunner[TConfig, TState],
         config: TConfig,
-        streams: Optional[List[str]] = None,
+        stream: str,
         state: Optional[TState] = None,
         document_transformer: Transformer = default_transformer,
     ):
         self.source = source
         self.config = config
-        self.streams = streams
+        self.stream = stream
         self.state = state
         self.document_transformer = document_transformer
+
+        self.last_state: Optional[AirbyteStateMessage] = None
 
     def load(self) -> List[Document]:
         return list(self._stream_load_data())
 
     def _stream_load_data(self) -> Iterable[Document]:
-        configured_catalog = create_full_catalog(self.source, self.config, self.streams)
+        configured_catalog = create_full_refresh_catalog(self.source, self.config, [self.stream])
 
         for message in self.source.read(self.config, configured_catalog, self.state):
             if message.type == Type.RECORD:
                 # TODO(michel): do we want to have accumulation mechanism?
                 yield self.document_transformer(message.record)
+            elif message.type is Type.STATE and message.state:
+                self.last_state = message.state

@@ -29,19 +29,13 @@ def to_configured_stream(
     cursor_field: Optional[List[str]] = None,
     primary_key: Optional[List[List[str]]] = None,
 ) -> ConfiguredAirbyteStream:
-    return ConfiguredAirbyteStream.parse_obj(
-        {
-            "stream": stream,
-            "sync_mode": sync_mode,
-            "destination_sync_mode": destination_sync_mode,
-            "cursor_field": cursor_field,
-            "primary_key": primary_key,
-        }
+    return ConfiguredAirbyteStream(
+        stream=stream, sync_mode=sync_mode, destination_sync_mode=destination_sync_mode, cursor_field=cursor_field, primary_key=primary_key
     )
 
 
 def to_configured_catalog(configured_streams: List[ConfiguredAirbyteStream]) -> ConfiguredAirbyteCatalog:
-    return ConfiguredAirbyteCatalog.parse_obj({"streams": configured_streams})
+    return ConfiguredAirbyteCatalog(streams=configured_streams)
 
 
 def full_refresh_streams(catalog: AirbyteCatalog, stream_names: List[str]) -> ConfiguredAirbyteCatalog:
@@ -54,7 +48,7 @@ def full_refresh_streams(catalog: AirbyteCatalog, stream_names: List[str]) -> Co
     return to_configured_catalog(configured_streams)
 
 
-def create_full_catalog(source: SourceRunner, config: TConfig, streams: Optional[List[str]] = None) -> ConfiguredAirbyteCatalog:
+def create_full_refresh_catalog(source: SourceRunner, config: TConfig, streams: Optional[List[str]] = None) -> ConfiguredAirbyteCatalog:
     catalog_message = get_first_message(source.discover(config), Type.CATALOG)
 
     if not catalog_message or not catalog_message.catalog:
