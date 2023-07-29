@@ -1,12 +1,14 @@
 from abc import ABC, abstractmethod
 from typing import Generic, Iterable, Optional, TypeVar
 
+from airbyte_cdk.connector import TConfig
+from airbyte_cdk.sources.source import TState
 from airbyte_protocol.models import AirbyteLogMessage, AirbyteMessage, ConfiguredAirbyteCatalog, Level, Type
 
 from airbyte_embed_cdk.tools import parse_json
 
-TConfig = TypeVar("TConfig")
-TState = TypeVar("TState")
+TConfig = TConfig
+TState = TState
 
 
 class SourceRunner(ABC, Generic[TConfig, TState]):
