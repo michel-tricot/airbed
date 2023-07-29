@@ -1,3 +1,5 @@
+[![build](https://github.com/michel-tricot/airbed/actions/workflows/build.yaml/badge.svg)](https://github.com/michel-tricot/airbed/actions/workflows/build.yaml)
+
 # How to use
 ## Langchain
 
