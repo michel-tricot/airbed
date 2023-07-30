@@ -4,12 +4,24 @@
 ## Langchain
 
 ```python
+# Container based
 from airbyte_embed_cdk.integrations.langchain import container_airbyte_langchain_loader
+
 
 FakerLoader = container_airbyte_langchain_loader("airbyte/source-faker", "4.0.0")
 
 config = ...
 reader = FakerLoader(config=config, stream="users")
+data = reader.load()
+
+# Python package based
+from airbyte_embed_cdk.integrations.langchain import cdk_airbyte_container_langchain_reader
+from source_pokeapi import SourcePokeapi
+
+CdkPokeapiReader = cdk_airbyte_container_langchain_reader(SourcePokeapi)
+
+config = ...
+reader = CdkPokeapiReader(config=config, stream="pokemon")
 data = reader.load()
 ```
 
@@ -23,6 +35,16 @@ FakerReader = container_airbyte_llamaindex_reader("airbyte/source-faker", "4.0.0
 config = ...
 reader = FakerReader(config=config)
 data = reader.load_data("users")
+
+# Python package based
+from airbyte_embed_cdk.integrations.llama_index import cdk_airbyte_container_llamaindex_reader
+from source_pokeapi import SourcePokeapi
+
+CdkPokeapiLoader = cdk_airbyte_container_llamaindex_reader(SourcePokeapi)
+
+config = ...
+reader = CdkPokeapiLoader(config=config, stream="pokemon")
+data = reader.load()
 ```
 
 # Current issues
@@ -36,7 +58,7 @@ data = reader.load_data("users")
 2. Can we make snowflake work that library? The building blocks are probably the same
 
 # Development
-```
+```shell
 # Get started
 poetry install --all-extras
 
