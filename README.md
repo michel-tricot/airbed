@@ -30,11 +30,10 @@ data = reader.load_data("users")
 2. doesn't work with python > 3.9 because the cdk/model lib is not compatible
 
 # Ideas
-1. Right now it launches docker. What if we have a published version of each python connector? `ModuleSource`
-2. Generate:
+1. Generate:
    1. Automatically generate docs and push it on both hubs (with a fake config generated from spec?)
    2. Could we also generate a config object from spec for each connector?
-3. Can we make snowflake work that library? The building blocks are probably the same
+2. Can we make snowflake work that library? The building blocks are probably the same
 
 # Development
 ```
