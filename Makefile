@@ -1,3 +1,5 @@
+all: check
+
 format-ruff:
 	poetry run ruff --fix .
 
@@ -19,3 +21,5 @@ lint: lint-mypy lint-ruff lint-black
 
 test:
 	poetry run pytest
+
+check: lint test
