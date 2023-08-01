@@ -25,7 +25,7 @@ class LoaderClass(Protocol):
         pass
 
 
-def cdk_airbyte_container_langchain_reader(source_class: type[Source]) -> LoaderClass:
+def cdk_airbyte_langchain_loader(source_class: type[Source]) -> LoaderClass:
     def constructor(
         config: TConfig,
         stream: str,

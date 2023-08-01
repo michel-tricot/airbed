@@ -22,7 +22,7 @@ class ReaderClass(Protocol):
         pass
 
 
-def cdk_airbyte_container_llamaindex_reader(source_class: type[Source]) -> ReaderClass:
+def cdk_airbyte_llamaindex_reader(source_class: type[Source]) -> ReaderClass:
     def constructor(
         config: TConfig,
         document_transformer: Transformer = default_transformer,
